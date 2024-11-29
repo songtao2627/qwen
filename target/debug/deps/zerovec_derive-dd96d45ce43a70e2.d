@@ -1,0 +1,10 @@
+/Users/shengsongtao1/llm/qwen/target/debug/deps/libzerovec_derive-dd96d45ce43a70e2.dylib: /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/lib.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/make_ule.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/make_varule.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/ule.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/utils.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/varule.rs
+
+/Users/shengsongtao1/llm/qwen/target/debug/deps/zerovec_derive-dd96d45ce43a70e2.d: /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/lib.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/make_ule.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/make_varule.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/ule.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/utils.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/varule.rs
+
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/lib.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/make_ule.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/make_varule.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/ule.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/utils.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/zerovec-derive-0.10.3/src/varule.rs:

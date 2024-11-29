@@ -1,0 +1,11 @@
+/Users/shengsongtao1/llm/qwen/target/debug/deps/libfutures_task-95943c63f9bd884a.rmeta: /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/lib.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/spawn.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/arc_wake.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/waker.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/waker_ref.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/future_obj.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/noop_waker.rs
+
+/Users/shengsongtao1/llm/qwen/target/debug/deps/futures_task-95943c63f9bd884a.d: /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/lib.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/spawn.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/arc_wake.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/waker.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/waker_ref.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/future_obj.rs /Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/noop_waker.rs
+
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/lib.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/spawn.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/arc_wake.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/waker.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/waker_ref.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/future_obj.rs:
+/Users/shengsongtao1/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/futures-task-0.3.31/src/noop_waker.rs:
