@@ -10,7 +10,6 @@ use tokio::fs::OpenOptions;
 use tokio::io::AsyncWriteExt;
 use futures_util::stream::{SplitStream, SplitSink};
 use std::env;
-use url::Url;
 
 const WS_URL: &str = "wss://dashscope.aliyuncs.com/api-ws/v1/inference/";
 const OUTPUT_FILE: &str = "output.mp3";
@@ -85,15 +84,22 @@ async fn main() {
 }
 
 async fn connect_websocket(api_key: &str) -> Result<(WebSocketStream<MaybeTlsStream<TcpStream>>, Response<()>), Box<dyn std::error::Error>> {
-    use tokio_tungstenite::tungstenite::handshake::client::Request;
-    use tokio_tungstenite::tungstenite::http::header::{HeaderMap, HeaderValue};
+    use tokio_tungstenite::tungstenite::handshake::client::{Request, generate_key};
     
     // 构建请求
     let request = Request::builder()
+        .method("GET")
         .uri(format!("{}?token={}", WS_URL, api_key))
+        .header("Host", "dashscope.aliyuncs.com")
+        .header("Connection", "Upgrade")
+        .header("Upgrade", "websocket")
+        .header("Sec-WebSocket-Version", "13")
+        .header("Sec-WebSocket-Key", generate_key())
         .header("X-DashScope-DataInspection", "enable")
         .header("Authorization", format!("bearer {}", api_key))
         .body(())?;
+
+    println!("Connecting with request headers: {:?}", request.headers());
 
     // 连接 WebSocket
     let (ws_stream, response) = tokio_tungstenite::connect_async(request).await?;
