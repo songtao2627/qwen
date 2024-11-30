@@ -1,4 +1,3 @@
-use std::env;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use tokio::net::TcpStream;
@@ -10,21 +9,32 @@ use http::Response;
 use tokio::fs::OpenOptions;
 use tokio::io::AsyncWriteExt;
 use futures_util::stream::{SplitStream, SplitSink};
+use std::env;
+use url::Url;
 
 const WS_URL: &str = "wss://dashscope.aliyuncs.com/api-ws/v1/inference/";
 const OUTPUT_FILE: &str = "output.mp3";
 
 #[tokio::main]
 async fn main() {
-    let api_key = env::var("DASHSCOPE_API_KEY").expect("Please set DASHSCOPE_API_KEY environment variable");
+    let api_key = match env::var("DASHSCOPE_API_KEY") {
+        Ok(key) => key,
+        Err(_) => {
+            eprintln!("Error: DASHSCOPE_API_KEY environment variable not set");
+            return;
+        }
+    };
     
+    println!("Clearing output file...");
     if let Err(e) = clear_output_file(OUTPUT_FILE).await {
         eprintln!("Failed to clear output file: {}", e);
         return;
     }
 
+    println!("Connecting to WebSocket server...");
     match connect_websocket(&api_key).await {
         Ok((stream, _)) => {
+            println!("Successfully connected to WebSocket server");
             let (write, read) = stream.split();
             let task_started = Arc::new(AtomicBool::new(false));
             let task_started_clone = task_started.clone();
@@ -34,37 +44,60 @@ async fn main() {
             });
 
             let mut write_half = write;
+            println!("Sending run-task command...");
             let task_id = match send_run_task_cmd(&mut write_half).await {
-                Ok(id) => id,
+                Ok(id) => {
+                    println!("Run-task command sent successfully, task_id: {}", id);
+                    id
+                },
                 Err(e) => {
                     eprintln!("Failed to send run-task command: {}", e);
                     return;
                 }
             };
 
+            println!("Waiting for task to start...");
             while !task_started.load(Ordering::SeqCst) {
                 tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
             }
 
+            println!("Sending continue-task command...");
             if let Err(e) = send_continue_task_cmd(&mut write_half, &task_id).await {
                 eprintln!("Failed to send continue-task command: {}", e);
                 return;
             }
 
+            println!("Sending finish-task command...");
             if let Err(e) = send_finish_task_cmd(&mut write_half, &task_id).await {
                 eprintln!("Failed to send finish-task command: {}", e);
                 return;
             }
 
+            println!("Waiting for result receiver task to complete...");
             result_receiver_task.await.unwrap();
+            println!("Task completed successfully!");
         },
-        Err(e) => eprintln!("Failed to connect to WebSocket: {}", e),
+        Err(e) => {
+            eprintln!("Failed to connect to WebSocket: {}", e);
+            eprintln!("Please check your API key and internet connection");
+        }
     }
 }
 
 async fn connect_websocket(api_key: &str) -> Result<(WebSocketStream<MaybeTlsStream<TcpStream>>, Response<()>), Box<dyn std::error::Error>> {
-    let (ws_stream, response) = tokio_tungstenite::connect_async(format!("{}?token={}", WS_URL, api_key))
-        .await?;
+    use tokio_tungstenite::tungstenite::handshake::client::Request;
+    use tokio_tungstenite::tungstenite::http::header::{HeaderMap, HeaderValue};
+    
+    // 构建请求
+    let request = Request::builder()
+        .uri(format!("{}?token={}", WS_URL, api_key))
+        .header("X-DashScope-DataInspection", "enable")
+        .header("Authorization", format!("bearer {}", api_key))
+        .body(())?;
+
+    // 连接 WebSocket
+    let (ws_stream, response) = tokio_tungstenite::connect_async(request).await?;
+
     Ok((ws_stream, response))
 }
 
@@ -177,25 +210,27 @@ async fn start_result_receiver(
 
 fn handle_event(event_str: String, task_started: &Arc<AtomicBool>) -> Result<(), Box<dyn std::error::Error>> {
     let event: serde_json::Value = serde_json::from_str(&event_str)?;
+    println!("Received event: {}", event_str);
     match event["header"]["event"].as_str() {
         Some("task-started") => {
-            println!("Received task-started event");
+            println!("Task started successfully");
             task_started.store(true, Ordering::SeqCst);
         },
-        Some("result-generated") => (), // Ignore this event
+        Some("result-generated") => {
+            println!("Result generated");
+        },
         Some("task-finished") => {
-            println!("Task finished");
+            println!("Task finished successfully");
             return Ok(());
         },
         Some("task-failed") => {
-            if let Some(error_message) = event["header"]["error_message"].as_str() {
-                println!("Task failed: {}", error_message);
-            } else {
-                println!("Unknown reason caused the task failure");
-            }
+            let error_message = event["header"]["error_message"]
+                .as_str()
+                .unwrap_or("Unknown error");
+            eprintln!("Task failed: {}", error_message);
             return Ok(());
         },
-        _ => println!("Unexpected event: {:?}", event),
+        _ => println!("Received unexpected event: {:?}", event),
     }
     Ok(())
 }
@@ -212,20 +247,13 @@ async fn write_binary_data_to_file(data: &[u8], file_path: &str) -> Result<(), B
 }
 
 async fn clear_output_file(file_path: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let mut file = OpenOptions::new()
+    let file = OpenOptions::new()
         .truncate(true)
         .create(true)
         .write(true)
         .open(file_path).await?;
 
     file.set_len(0).await?;
-    Ok(())
-}
-
-async fn send_message(stream: &mut WebSocketStream<MaybeTlsStream<TcpStream>>, cmd: &str) 
-    -> Result<(), Box<dyn std::error::Error>> 
-{
-    stream.send(Message::Text(cmd.to_string())).await?;
     Ok(())
 }
 
